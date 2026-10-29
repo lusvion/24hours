@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>24:00</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #090909;
+  color: #eee;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+main {
+  width: 100%;
+  max-width: 390px;
+}
+
+img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+  filter: brightness(.85);
+}
+
+.timer {
+  text-align: center;
+  padding: 30px 0 10px;
+  font-size: clamp(38px, 11vw, 56px);
+  font-weight: 300;
+  letter-spacing: 3px;
+  font-variant-numeric: tabular-nums;
+}
+
+.label {
+  text-align: center;
+  color: #777;
+  font-size: 10px;
+  letter-spacing: 4px;
+  margin-top: 12px;
+}
+
+@media (max-width: 420px) {
+  img { height: 48vh; }
+}
+</style>
+</head>
+
+<body>
+<main>
+  <img src="foto.jpg" alt="Foto">
+
+  <div class="timer" id="timer">24:00:00</div>
+  <div class="label" id="label">AGUARDANDO</div>
+</main>
+
+<script>
+const start = new Date(2026, 9, 29, 0, 0, 0).getTime();
+const end = new Date(2026, 9, 30, 0, 0, 0).getTime();
+
+function update() {
+  const now = Date.now();
+
+  if (now < start) {
+    const seconds = Math.floor((start - now) / 1000);
+    show(seconds);
+    document.getElementById("label").textContent = "EM BREVE";
+  } else if (now < end) {
+    const seconds = Math.floor((end - now) / 1000);
+    show(seconds);
+    document.getElementById("label").textContent = "CONTAGEM REGRESSIVA";
+  } else {
+    document.getElementById("timer").textContent = "00:00:00";
+    document.getElementById("label").textContent = "FIM";
+  }
+}
+
+function show(seconds) {
+  const h = String(Math.floor(seconds / 3600)).padStart(2, "0");
+  const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+  const s = String(seconds % 60).padStart(2, "0");
+
+  document.getElementById("timer").textContent = `${h}:${m}:${s}`;
+}
+
+update();
+setInterval(update, 1000);
+</script>
+</body>
+</html>
+
